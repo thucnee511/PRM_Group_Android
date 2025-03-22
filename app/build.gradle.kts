@@ -43,5 +43,5 @@ dependencies {
     implementation(libs.java.dotenv)
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
-
+    implementation(libs.lombok)
 }
