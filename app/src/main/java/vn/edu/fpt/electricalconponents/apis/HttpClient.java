@@ -1,5 +1,13 @@
 package vn.edu.fpt.electricalconponents.apis;
 
+import androidx.annotation.NonNull;
+
+import java.io.IOException;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
+import okhttp3.Interceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import vn.edu.fpt.electricalconponents.utils.EnvConfiguration;
@@ -35,25 +43,80 @@ public final class HttpClient {
         return instance;
     }
 
+
     /**
-     * Initializes the Retrofit client for making network requests.
-     * <p>
-     * This method creates a new Retrofit instance configured with the base API URL
-     * and the Gson converter factory. It ensures that only one instance of Retrofit
-     * is created by throwing an IllegalStateException if the client has already
-     * been initialized.
+     * Initializes and configures the Retrofit client for making network requests.
      *
-     * @throws IllegalStateException if the Retrofit client has already been initialized.
-     *                               This indicates that `openClient()` has been called
-     *                               previously and the client is already set up.
+     * <p>This method performs the following actions:</p>
+     * <ul>
+     *   <li>Checks if a Retrofit instance already exists. If so, it throws an {@link IllegalStateException}
+     *       to prevent re-initialization.</li>
+     *   <li>Creates a {@link Gson} instance with a specific date format ("yyyy-MM-dd'T'HH:mm:ssZ")
+     *       to handle date/time serialization and deserialization.</li>
+     *   <li>Builds a {@link Retrofit} client using the specified base URL ({@code API_URL}).</li>
+     *   <li>Configures Retrofit to use {@link GsonConverterFactory} for converting JSON responses
+     *       to Java objects and vice-versa.</li>
+     * </ul>
+     *
+     * <p><b>Preconditions:</b></p>
+     * <ul>
+     *   <li>{@code API_URL} must be a valid base URL for the API.</li>
+     *   <li>Retrofit instance should not have been initialized before calling this method.</li>
+     * </ul>
+     *
+     * <p><b>Postconditions:</b></p>
+     * <ul>
+     *   <li>A new Retrofit instance is created and stored in the {@code retrofit} field.</li>
+     *   <li>The Retrofit instance is configured to use Gson for JSON conversion.</li>
+     *   <li>The Retrofit instance is ready to be used for creating API service interfaces.</li>
+     * </ul>
+     *
+     * @throws IllegalStateException if the Retrofit instance has already been initialized.
      */
     public void openClient(){
         if (retrofit != null) throw new IllegalStateException("Retrofit already initialized");
+        Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+                .create();
         retrofit = new Retrofit.Builder().baseUrl(API_URL)
-                .addConverterFactory(GsonConverterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create(gson))
                 .build();
     }
 
+    /**
+     * Initializes and configures the Retrofit client for making API requests.
+     * This method sets up an OkHttpClient with an interceptor to add the
+     * provided Bearer token to the Authorization header of each request.
+     * It also configures Gson for JSON serialization/deserialization and sets the
+     * date format. Finally, it creates a Retrofit instance with the specified
+     * base URL, OkHttpClient, and Gson converter.
+     *
+     * @param bearerToken The Bearer token to be included in the Authorization header of API requests.
+     *                    This token is used for authentication and authorization.
+     * @throws IllegalStateException If the Retrofit client has already been initialized.
+     */
+    public void openClient(String bearerToken) {
+        if (retrofit != null) throw new IllegalStateException("Retrofit already initialized");
+
+        okhttp3.OkHttpClient okHttpClient = new okhttp3.OkHttpClient.Builder()
+                .addInterceptor(new Interceptor() {
+                    @NonNull
+                    @Override
+                    public okhttp3.Response intercept(@NonNull Chain chain) throws IOException {
+                        okhttp3.Request originalRequest = chain.request();
+                        okhttp3.Request.Builder builder = originalRequest.newBuilder()
+                                .header("Authorization", "Bearer " + bearerToken);
+                        okhttp3.Request newRequest = builder.build();
+                        return chain.proceed(newRequest);
+                    }
+                })
+                .build();
+        Gson gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+                .create();
+        retrofit = new Retrofit.Builder().baseUrl(API_URL).client(okHttpClient)
+                .addConverterFactory(GsonConverterFactory.create(gson)).build();
+    }
     /**
      * Provides a Retrofit client instance.
      */
