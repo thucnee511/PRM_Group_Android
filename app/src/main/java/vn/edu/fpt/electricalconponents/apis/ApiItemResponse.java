@@ -1,10 +1,7 @@
 package vn.edu.fpt.electricalconponents.apis;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+
+import androidx.annotation.NonNull;
 
 /**
  * Represents a generic API response containing a status, message, and an optional data payload.
@@ -16,13 +13,51 @@ import lombok.ToString;
  * @param <T> The type of the data payload. This can be any Java object, allowing flexibility in the
  *            type of data returned by the API. If no data is returned, this can be set to Void or null.
  */
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
-@Setter
-@ToString
-public class ApiItemResponse<T>{
+public class ApiItemResponse<T> {
     private String status;
     private String message;
     private T data;
+
+    public ApiItemResponse() {
+    }
+
+    public ApiItemResponse(String status, String message, T data) {
+        this.status = status;
+        this.message = message;
+        this.data = data;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public T getData() {
+        return data;
+    }
+
+    public void setData(T data) {
+        this.data = data;
+    }
+
+    @NonNull
+    @Override
+    public String toString() {
+        return "ApiItemResponse{" +
+                "status='" + status + '\'' +
+                ", message='" + message + '\'' +
+                ", data=" + data +
+                '}';
+    }
 }
