@@ -13,7 +13,7 @@ import java.util.List;
  */
 
 public class ApiListResponse<T> {
-    private String status;
+    private int status;
     private String message;
     private int size;
     private int page;
@@ -24,7 +24,7 @@ public class ApiListResponse<T> {
     public ApiListResponse() {
     }
 
-    public ApiListResponse(String status, String message, int size, int page, int totalPage, int totalSize, List<T> data) {
+    public ApiListResponse(int status, String message, int size, int page, int totalPage, int totalSize, List<T> data) {
         this.status = status;
         this.message = message;
         this.size = size;
@@ -34,11 +34,11 @@ public class ApiListResponse<T> {
         this.data = data;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -94,7 +94,7 @@ public class ApiListResponse<T> {
     @Override
     public String toString() {
         return "ApiListResponse{" +
-                "status='" + status + '\'' +
+                "status=" + status +
                 ", message='" + message + '\'' +
                 ", size=" + size +
                 ", page=" + page +

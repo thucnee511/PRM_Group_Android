@@ -14,24 +14,24 @@ import androidx.annotation.NonNull;
  *            type of data returned by the API. If no data is returned, this can be set to Void or null.
  */
 public class ApiItemResponse<T> {
-    private String status;
+    private int status;
     private String message;
     private T data;
 
     public ApiItemResponse() {
     }
 
-    public ApiItemResponse(String status, String message, T data) {
+    public ApiItemResponse(int status, String message, T data) {
         this.status = status;
         this.message = message;
         this.data = data;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -55,7 +55,7 @@ public class ApiItemResponse<T> {
     @Override
     public String toString() {
         return "ApiItemResponse{" +
-                "status='" + status + '\'' +
+                "status='" + status +
                 ", message='" + message + '\'' +
                 ", data=" + data +
                 '}';

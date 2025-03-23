@@ -44,4 +44,7 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.lombok)
+    implementation(libs.adapter.rxjava3)
+    implementation(libs.rxjava)
+    implementation(libs.rxandroid)
 }

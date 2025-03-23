@@ -8,22 +8,22 @@ import androidx.annotation.NonNull;
  * It provides a standardized way to communicate errors back to the client.
  */
 public class ApiErrorResponse {
-    private String status;
+    private int status;
     private String message;
 
     public ApiErrorResponse() {
     }
 
-    public ApiErrorResponse(String status, String message) {
+    public ApiErrorResponse(int status, String message) {
         this.status = status;
         this.message = message;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 
@@ -39,7 +39,7 @@ public class ApiErrorResponse {
     @Override
     public String toString() {
         return "ApiErrorResponse{" +
-                "status='" + status + '\'' +
+                "status='" + status +
                 ", message='" + message + '\'' +
                 '}';
     }
