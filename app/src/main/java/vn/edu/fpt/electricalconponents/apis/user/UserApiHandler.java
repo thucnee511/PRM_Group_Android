@@ -23,7 +23,7 @@ public class UserApiHandler {
     private UserApi userApi;
 
     private UserApiHandler(Context context) {
-        originalUrl = "api/users/";
+        originalUrl = "api/user/";
         this.context = context;
     }
 
