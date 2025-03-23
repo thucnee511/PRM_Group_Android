@@ -1,6 +1,7 @@
 package vn.edu.fpt.electricalconponents.apis.authentication;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 
 import java.util.MissingFormatArgumentException;
@@ -17,6 +18,7 @@ import vn.edu.fpt.electricalconponents.models.User;
 import vn.edu.fpt.electricalconponents.state.StateManager;
 
 public final class AuthenticationApiHandler {
+    @SuppressLint("StaticFieldLeak")
     private static AuthenticationApiHandler instance;
     private final String originalUrl;
     private final Context context;
