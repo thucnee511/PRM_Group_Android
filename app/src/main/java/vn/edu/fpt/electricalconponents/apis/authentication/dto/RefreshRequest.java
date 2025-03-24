@@ -1,28 +1,19 @@
 package vn.edu.fpt.electricalconponents.apis.authentication.dto;
 
-public class RefreshRequest {
+import java.io.Serializable;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@ToString
+public class RefreshRequest implements Serializable {
 
     private String refreshToken;
-
-    public RefreshRequest() {
-    }
-
-    public RefreshRequest(String refreshToken) {
-        this.refreshToken = refreshToken;
-    }
-
-    @Override
-    public String toString() {
-        return "RefreshRequest{" +
-                "refreshToken='" + refreshToken + '\'' +
-                '}';
-    }
-
-    public String getRefreshToken() {
-        return refreshToken;
-    }
-
-    public void setRefreshToken(String refreshToken) {
-        this.refreshToken = refreshToken;
-    }
 }

@@ -20,6 +20,7 @@ public class CategoryApiHandler {
 
     private CategoryApiHandler() {
         originalUrl = "api/category/";
+        httpClient = HttpClient.getInstance();
     }
 
     public static CategoryApiHandler getInstance() {

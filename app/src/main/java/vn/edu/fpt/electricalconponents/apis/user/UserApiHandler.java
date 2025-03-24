@@ -25,6 +25,7 @@ public class UserApiHandler {
     private UserApiHandler(Context context) {
         originalUrl = "api/user/";
         this.context = context;
+        httpClient = HttpClient.getInstance();
     }
 
     public static UserApiHandler getInstance(Context context) {

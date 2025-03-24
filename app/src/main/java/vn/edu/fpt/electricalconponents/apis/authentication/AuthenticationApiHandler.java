@@ -22,12 +22,13 @@ public final class AuthenticationApiHandler {
     private static AuthenticationApiHandler instance;
     private final String originalUrl;
     private final Context context;
-    private HttpClient httpClient;
+    private final HttpClient httpClient;
     private AuthenticationApi authenticationApi;
 
     private AuthenticationApiHandler(Context context) {
         originalUrl = "api/auth/";
         this.context = context;
+        httpClient = HttpClient.getInstance();
     }
 
     public static AuthenticationApiHandler getInstance(Context context) {
