@@ -1,6 +1,9 @@
 [versions]
 agp = "8.8.0"
 converterGson = "2.0.2"
+credentials = "1.5.0"
+firebaseBom = "33.11.0"
+googleid = "1.1.1"
 javaDotenv = "5.2.2"
 junit = "4.13.2"
 junitVersion = "1.2.1"
@@ -16,6 +19,11 @@ rxjava = "3.1.6"
 
 [libraries]
 adapter-rxjava3 = { module = "com.squareup.retrofit2:adapter-rxjava3", version.ref = "retrofit" }
+credentials = { module = "androidx.credentials:credentials", version.ref = "credentials" }
+credentials-play-services-auth = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "credentials" }
+firebase-auth = { module = "com.google.firebase:firebase-auth" }
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom" }
+googleid = { module = "com.google.android.libraries.identity.googleid:googleid", version.ref = "googleid" }
 lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
