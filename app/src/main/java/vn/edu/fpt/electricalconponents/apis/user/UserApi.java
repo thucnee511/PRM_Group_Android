@@ -21,7 +21,7 @@ public interface UserApi {
     @GET("{id}")
     Observable<ApiItemResponse<User>> getOneUser(@Path("id") String id);
 
-    @PUT("{if}")
+    @PUT("{id}")
     Observable<ApiItemResponse<User>> updateUser(@Path("id") String id, UpdateUserRequest user);
 
     @DELETE("{id}")
