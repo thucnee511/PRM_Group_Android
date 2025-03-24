@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.android.application)
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -7,7 +8,7 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        applicationId = "vn.edu.fpt.electricalconponents"
+        applicationId = "vn.edu.fpt.electricalcomponents"
         minSdk = 24
         targetSdk = 35
         versionCode = 1
@@ -43,8 +44,15 @@ dependencies {
     implementation(libs.java.dotenv)
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
-    implementation(libs.lombok)
+    compileOnly(libs.lombok)
+    annotationProcessor(libs.lombok)
     implementation(libs.adapter.rxjava3)
+    implementation(libs.play.services.auth)
     implementation(libs.rxjava)
     implementation(libs.rxandroid)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.auth)
+    implementation(libs.credentials)
+    implementation(libs.credentials.play.services.auth)
+    implementation(libs.googleid)
 }
