@@ -17,6 +17,9 @@
         android:theme="@style/Theme.ElectricalComponents"
         tools:targetApi="31">
         <activity
+            android:name=".activities.home.DetailActivity"
+            android:exported="false" />
+        <activity
             android:name=".activities.auth.RegisterActivity"
             android:exported="true" />
         <activity

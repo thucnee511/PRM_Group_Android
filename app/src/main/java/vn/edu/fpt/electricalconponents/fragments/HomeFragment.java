@@ -1,6 +1,7 @@
 package vn.edu.fpt.electricalconponents.fragments;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +18,7 @@ import java.util.List;
 
 import vn.edu.fpt.electricalconponents.MyApplication;
 import vn.edu.fpt.electricalconponents.R;
+import vn.edu.fpt.electricalconponents.activities.home.DetailActivity;
 import vn.edu.fpt.electricalconponents.adapters.ProductsAdapter;
 import vn.edu.fpt.electricalconponents.apis.product.ProductApiHandler;
 import vn.edu.fpt.electricalconponents.models.Product;
@@ -88,7 +90,9 @@ public class HomeFragment extends Fragment implements ProductsAdapter.ProductCli
 
     @Override
     public void onDetailsClick(String productId) {
-
+        Intent intent = new Intent(this.getContext(), DetailActivity.class);
+        intent.putExtra("productId", productId);
+        startActivity(intent);
     }
 
     @Override
