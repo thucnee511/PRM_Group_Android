@@ -14,13 +14,13 @@
         android:layout_marginTop="15dp"
         android:layout_marginEnd="15dp"
         android:layout_marginBottom="15dp"
-        app:layout_constraintBottom_toTopOf="@+id/cartProductItm_btnRemove"
+        app:layout_constraintBottom_toTopOf="@+id/cartFrg_btnCheckout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/cartProductItm_btnRemove"
+        android:id="@+id/cartFrg_btnCheckout"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -30,7 +30,7 @@
         android:backgroundTint="#13BEF9"
         android:fontFamily="sans-serif-black"
         android:insetTop="@dimen/mtrl_btn_inset"
-        android:text="Remove item"
+        android:text="Checkout"
         android:textColor="#FAFAFA"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

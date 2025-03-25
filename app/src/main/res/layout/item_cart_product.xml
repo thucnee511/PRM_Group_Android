@@ -38,7 +38,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/cartProductItm_btnRemove"
+            android:id="@+id/cartFrg_btnCheckout"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -62,7 +62,7 @@
             android:text="TextView"
             android:textColor="#F44336"
             android:textSize="12sp"
-            app:layout_constraintBottom_toTopOf="@+id/cartProductItm_btnRemove"
+            app:layout_constraintBottom_toTopOf="@+id/cartFrg_btnCheckout"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/cartProductItm_img" />
 
@@ -79,7 +79,7 @@
             android:textColor="#050505"
             android:textSize="24sp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/cartProductItm_btnRemove"
+            app:layout_constraintEnd_toStartOf="@+id/cartFrg_btnCheckout"
             app:layout_constraintStart_toEndOf="@+id/cartProductItm_img"
             app:layout_constraintTop_toBottomOf="@+id/cartProductItm_txtPrice" />
     </androidx.constraintlayout.widget.ConstraintLayout>

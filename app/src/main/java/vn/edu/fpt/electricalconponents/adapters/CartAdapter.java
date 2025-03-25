@@ -32,22 +32,28 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
     @NonNull
     @Override
     public CartViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_product, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_cart_product, parent, false);
         return new CartViewHolder(view);
     }
 
     @SuppressLint("CheckResult")
     @Override
     public void onBindViewHolder(@NonNull CartViewHolder holder, int position) {
+        System.out.println(cartItems.get(position));
         holder.itemQuantity.setText(String.valueOf(cartItems.get(position).getQuantity()));
         String productId = cartItems.get(position).getProductId();
         holder.btnRemove.setOnClickListener(v -> listener.onRemoveClick(productId));
-        holder.productPrice.setText(String.format("%,d VNĐ", cartItems.get(position).getPrice()).replaceAll(",", "."));
+        holder.productPrice.setText(
+                String.format("%,d VNĐ",
+                                cartItems.get(position).getPrice() * cartItems.get(position).getQuantity())
+                        .replaceAll(",", ".")
+        );
         // Load product image using a library like Glide or Picasso
         ProductApiHandler.getInstance(MyApplication.getInstance())
                 .getOneProduct(productId)
                 .subscribe(
                         product -> {
+                            System.out.println(product);
                             Glide.with(holder.itemView.getContext()).load(product.getImageUrl()).into(holder.productImage);
                             holder.productName.setText(product.getName());
                         }, Throwable::printStackTrace
@@ -56,7 +62,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
 
     @Override
     public int getItemCount() {
-        return 0;
+        return cartItems.size();
     }
 
     public static interface CartClickListener {
@@ -73,7 +79,7 @@ public class CartAdapter extends RecyclerView.Adapter<CartAdapter.CartViewHolder
             itemQuantity = itemView.findViewById(R.id.cartProductItm_txtQuantity);
             productName = itemView.findViewById(R.id.cartProductItm_txtName);
             productPrice = itemView.findViewById(R.id.cartProductItm_txtPrice);
-            btnRemove = itemView.findViewById(R.id.cartProductItm_btnRemove);
+            btnRemove = itemView.findViewById(R.id.cartFrg_btnCheckout);
             productImage = itemView.findViewById(R.id.cartProductItm_img);
         }
     }
