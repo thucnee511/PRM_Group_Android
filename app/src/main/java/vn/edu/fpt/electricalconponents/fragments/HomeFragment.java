@@ -61,6 +61,7 @@ public class HomeFragment extends Fragment implements ProductsAdapter.ProductCli
         rcv = view.findViewById(R.id.homeFrg_rcv);
         edtSearch = view.findViewById(R.id.homeFrg_edtSearch);
         btnSearch = view.findViewById(R.id.homeFrg_btnSearch);
+        btnSearch.setOnClickListener(v -> loadProducts());
         products = new ArrayList<>();
         adapter = new ProductsAdapter(products, this);
         rcv.setLayoutManager(new LinearLayoutManager(this.getContext()));
@@ -70,7 +71,6 @@ public class HomeFragment extends Fragment implements ProductsAdapter.ProductCli
 
     @SuppressLint("CheckResult")
     private void loadProducts() {
-
         String keyword = edtSearch.getText().toString();
         ProductApiHandler.getInstance(MyApplication.getInstance())
                 .getAllProducts(null, null, keyword, null, null, null, null, null)
