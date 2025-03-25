@@ -22,41 +22,44 @@ public class CartApiHandler {
     private CartApi cartApi;
 
     private CartApiHandler(Context context) {
-        originalUrl = "api/cart/";
+        originalUrl = "api/";
         this.context = context;
         httpClient = HttpClient.getInstance();
     }
+
     public static CartApiHandler getInstance(Context context) {
         if (instance == null)
             instance = new CartApiHandler(context);
         return instance;
     }
-    public Observable<ApiListResponse<Cart>> getCarts() {
+
+    public Observable<Cart> getCart() {
         String accessToken = StateManager.getInstance(this.context).getAccessToken();
         httpClient.openClient(originalUrl, accessToken);
         cartApi = httpClient.getClient().create(CartApi.class);
-        Observable<ApiListResponse<Cart>> observable
+        Observable<Cart> observable
                 = cartApi.getCarts()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .map(response -> {
+                    System.out.println(response);
                     if (response == null || response.getData() == null)
                         throw new NullPointerException("Get all carts failed: Response body is empty");
                     if (response.getStatus() != 200)
                         throw new NullPointerException("Get all carts failed: " + response.getMessage());
-                    return response;
+                    return response.getData();
                 });
         cartApi = null;
         httpClient.closeClient();
         return observable;
     }
 
-    public Observable<ApiListResponse<CartItem>> getCartItems(String id, int page, int size) {
+    public Observable<ApiListResponse<CartItem>> getCartItems(String id) {
         String accessToken = StateManager.getInstance(this.context).getAccessToken();
         httpClient.openClient(originalUrl, accessToken);
         cartApi = httpClient.getClient().create(CartApi.class);
         Observable<ApiListResponse<CartItem>> observable
-                = cartApi.getCartItems(id, page, size)
+                = cartApi.getCartItems(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .map(response -> {

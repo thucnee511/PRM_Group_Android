@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,6 +21,7 @@ import vn.edu.fpt.electricalconponents.MyApplication;
 import vn.edu.fpt.electricalconponents.R;
 import vn.edu.fpt.electricalconponents.activities.home.DetailActivity;
 import vn.edu.fpt.electricalconponents.adapters.ProductsAdapter;
+import vn.edu.fpt.electricalconponents.apis.cart.CartApiHandler;
 import vn.edu.fpt.electricalconponents.apis.product.ProductApiHandler;
 import vn.edu.fpt.electricalconponents.models.Product;
 
@@ -95,8 +97,23 @@ public class HomeFragment extends Fragment implements ProductsAdapter.ProductCli
         startActivity(intent);
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void onAddToCartClick(String productId) {
-
+        CartApiHandler.getInstance(MyApplication.getInstance())
+                .getCart()
+                .subscribe(
+                        cart -> {
+                            CartApiHandler.getInstance(MyApplication.getInstance())
+                                    .createCart(cart.getId(), productId, 1)
+                                    .subscribe(
+                                            response -> {
+                                                requireActivity().runOnUiThread(() -> {
+                                                    Toast.makeText(this.getContext(), "Success", Toast.LENGTH_SHORT).show();
+                                                });
+                                            }, Throwable::printStackTrace);
+                        }
+                        , Throwable::printStackTrace
+                );
     }
 }
