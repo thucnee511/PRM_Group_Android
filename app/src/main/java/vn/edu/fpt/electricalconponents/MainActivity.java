@@ -9,7 +9,7 @@ import android.widget.TextView;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 
-import vn.edu.fpt.electricalconponents.activities.LoginActivity;
+import vn.edu.fpt.electricalconponents.activities.auth.LoginActivity;
 import vn.edu.fpt.electricalconponents.state.StateManager;
 
 public class MainActivity extends AppCompatActivity {

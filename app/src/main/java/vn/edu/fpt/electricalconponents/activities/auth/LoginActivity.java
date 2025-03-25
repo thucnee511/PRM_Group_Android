@@ -1,4 +1,4 @@
-package vn.edu.fpt.electricalconponents.activities;
+package vn.edu.fpt.electricalconponents.activities.auth;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -10,7 +10,6 @@ import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.credentials.CredentialManager;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -18,7 +17,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 
 import vn.edu.fpt.electricalconponents.MainActivity;
 import vn.edu.fpt.electricalconponents.MyApplication;
@@ -30,8 +28,6 @@ import vn.edu.fpt.electricalconponents.state.StateManager;
 
 public class LoginActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 9001;
-    private FirebaseAuth mAuth;
-    private CredentialManager credentialManager;
     private EditText edtEmail;
     private EditText edtPassword;
     private Button btnSignIn;
@@ -47,13 +43,11 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        edtEmail = findViewById(R.id.edtEmail);
-        edtPassword = findViewById(R.id.edtPassword);
-        btnSignIn = findViewById(R.id.btnSignIn);
-        btnSignUp = findViewById(R.id.btnSignUp);
-        btnSignInGoogle = findViewById(R.id.btnSignInGoogle);
-        mAuth = FirebaseAuth.getInstance();
-        credentialManager = CredentialManager.create(getBaseContext());
+        edtEmail = findViewById(R.id.loginAtv_edtEmail);
+        edtPassword = findViewById(R.id.loginAtv_edtPassword);
+        btnSignIn = findViewById(R.id.loginAtv_btnSignIn);
+        btnSignUp = findViewById(R.id.loginAtv_btnSignUp);
+        btnSignInGoogle = findViewById(R.id.loginAtv_btnSignInGoogle);
 
         btnSignInGoogle.setOnClickListener(v -> onClickBtnSignInGoogle());
         btnSignIn.setOnClickListener(v -> onClickBtnSignIn());
@@ -76,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void validateLogin(String email, String password) {
-        
+
     }
 
     private void onClickBtnSignUp() {
