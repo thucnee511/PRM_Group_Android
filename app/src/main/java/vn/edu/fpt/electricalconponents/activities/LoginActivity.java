@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,7 +19,11 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
+import vn.edu.fpt.electricalconponents.MyApplication;
 import vn.edu.fpt.electricalconponents.R;
+import vn.edu.fpt.electricalconponents.apis.authentication.AuthenticationApiHandler;
+import vn.edu.fpt.electricalconponents.apis.authentication.dto.GoogleSignInRequest;
+import vn.edu.fpt.electricalconponents.state.StateManager;
 
 public class LoginActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 9001;
@@ -59,9 +64,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void onClickBtnSignInGoogle() {
+        Log.w("SignIn", "Google sign in: " + R.string.default_web_client_id);
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
-                .requestIdToken(String.valueOf(R.string.default_web_client_id))
                 .build();
         GoogleSignInClient googleSignInClient = GoogleSignIn.getClient(this, gso);
         Intent signInIntent = googleSignInClient.getSignInIntent();
@@ -76,11 +81,30 @@ public class LoginActivity extends AppCompatActivity {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
-                String idToken = account.getIdToken();
+                GoogleSignInRequest request = new GoogleSignInRequest(
+                        account.getEmail(),
+                        account.getDisplayName(),
+                        null
+                );
+                handlerGoogleSignIn(request);
                 // Gửi token này đến server backend của bạn
             } catch (ApiException e) {
-                Log.w("SignIn", "Google sign in failed", e);
+                Toast.makeText(this, "Sign in via Google failed: ", Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+    private void handlerGoogleSignIn(GoogleSignInRequest request) {
+        AuthenticationApiHandler.getInstance(MyApplication.getInstance())
+                .googleSignIn(request)
+                .subscribe(token -> {
+                    Log.w("SignIn", "Sign in via Google successfully: " + token);
+                    StateManager.getInstance(MyApplication.getInstance()).setAccessToken(token.getAccessToken());
+                    StateManager.getInstance(MyApplication.getInstance()).setRefreshToken(token.getRefreshToken());
+                    Toast.makeText(this, "Sign in via Google successfully", Toast.LENGTH_LONG).show();
+                    finish();
+                }, error -> {
+                    Toast.makeText(this, error.getMessage(), Toast.LENGTH_LONG).show();
+                });
     }
 }

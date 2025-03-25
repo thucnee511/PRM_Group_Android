@@ -1,5 +1,9 @@
 package vn.edu.fpt.electricalconponents.utils;
 
+import android.util.Log;
+
+import java.io.File;
+
 import io.github.cdimascio.dotenv.Dotenv;
 
 /**
@@ -22,12 +26,19 @@ import io.github.cdimascio.dotenv.Dotenv;
 public final class EnvConfiguration {
     private static EnvConfiguration instance;
     private final Dotenv config;
-    private EnvConfiguration(){
-        config = Dotenv.configure().load();
+
+    private EnvConfiguration() {
+        File file = new File("\\.env");
+        Log.d("ENV_PATH", "File exists: " + file.exists());
+        config = Dotenv.configure()
+                .directory("/src")
+                .filename(".env")
+                .load();
     }
+
     /**
      * Returns the singleton instance of the EnvConfiguration class.
-     *
+     * <p>
      * This method implements the Singleton design pattern, ensuring that only one
      * instance of EnvConfiguration exists throughout the application's lifecycle.
      * If an instance has not been created yet, it creates one and stores it.
@@ -49,7 +60,7 @@ public final class EnvConfiguration {
      * @return The value to which the specified key is mapped, or {@code null} if this configuration contains no mapping for the key.
      * @throws NullPointerException if the specified key is null.
      */
-    public String getKey(String key){
+    public String getKey(String key) {
         return config.get(key);
     }
 }

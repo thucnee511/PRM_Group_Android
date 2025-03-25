@@ -5,6 +5,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import vn.edu.fpt.electricalconponents.apis.ApiItemResponse;
+import vn.edu.fpt.electricalconponents.apis.authentication.dto.GoogleSignInRequest;
 import vn.edu.fpt.electricalconponents.apis.authentication.dto.RefreshRequest;
 import vn.edu.fpt.electricalconponents.apis.authentication.dto.SignIgnRequest;
 import vn.edu.fpt.electricalconponents.apis.authentication.dto.SignUpRequest;
@@ -20,6 +21,9 @@ public interface AuthenticationApi {
 
     @POST("refresh")
     Observable<ApiItemResponse<Token>> refresh(@Body RefreshRequest request);
+
+    @POST("google")
+    Observable<ApiItemResponse<Token>> googleSignIn(@Body GoogleSignInRequest request);
 
     @GET("me")
     Observable<ApiItemResponse<User>> getMe();

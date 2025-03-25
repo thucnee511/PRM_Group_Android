@@ -10,6 +10,7 @@ import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
 import vn.edu.fpt.electricalconponents.apis.HttpClient;
+import vn.edu.fpt.electricalconponents.apis.authentication.dto.GoogleSignInRequest;
 import vn.edu.fpt.electricalconponents.apis.authentication.dto.RefreshRequest;
 import vn.edu.fpt.electricalconponents.apis.authentication.dto.SignIgnRequest;
 import vn.edu.fpt.electricalconponents.apis.authentication.dto.SignUpRequest;
@@ -43,6 +44,25 @@ public final class AuthenticationApiHandler {
         authenticationApi = httpClient.getClient().create(AuthenticationApi.class);
         Observable<Token> observable
                 = authenticationApi.signIn(request)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .map(response -> {
+                    if (response == null || response.getData() == null)
+                        throw new MissingFormatArgumentException("Login failed: Response body is empty");
+                    if (response.getStatus() != 200)
+                        throw new MissingFormatArgumentException("Login failed: " + response.getMessage());
+                    return response.getData();
+                });
+        authenticationApi = null;
+        httpClient.closeClient();
+        return observable;
+    }
+
+    public Observable<Token> googleSignIn(GoogleSignInRequest request) {
+        httpClient.openClient(originalUrl);
+        authenticationApi = httpClient.getClient().create(AuthenticationApi.class);
+        Observable<Token> observable
+                = authenticationApi.googleSignIn(request)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .map(response -> {
