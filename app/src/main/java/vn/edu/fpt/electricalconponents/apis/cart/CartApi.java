@@ -1,6 +1,7 @@
 package vn.edu.fpt.electricalconponents.apis.cart;
 
 import io.reactivex.rxjava3.core.Observable;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
@@ -24,6 +25,6 @@ public interface CartApi {
     @PUT("carts/{id}/items")
     Observable<ApiItemResponse<CartItem>> updateCart(@Path("id") String id, @Query("productId") String productId, @Query("quantity") int quantity);
 
-    @PUT("carts/{id}/items")
+    @DELETE("carts/{id}/items")
     Observable<ApiItemResponse<CartItem>> deleteCart(@Path("id") String id, @Query("productId") String productId);
 }

@@ -93,8 +93,26 @@ public class CartFragment extends Fragment implements CartAdapter.CartClickListe
                 );
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void onRemoveClick(String productId) {
+        CartApiHandler.getInstance(MyApplication.getInstance())
+                .deleteCart(cartId, productId)
+                .subscribe(response -> {
+                    System.out.println(response);
+                    requireActivity().runOnUiThread(() -> {
+                        removeProductFromList(productId);
+                        loadCartItems();
+                    });
+                }, Throwable::printStackTrace);
+    }
 
+    private void removeProductFromList(String productId) {
+        for (int i = 0; i < cartItems.size(); i++) {
+            if (cartItems.get(i).getId().equals(productId)) {
+                cartItems.remove(i);
+                break;
+            }
+        }
     }
 }
