@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -28,6 +29,7 @@ import vn.edu.fpt.electricalconponents.state.StateManager;
 
 public class LoginActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 9001;
+    private TextView txtError;
     private EditText edtEmail;
     private EditText edtPassword;
     private Button btnSignIn;
@@ -43,6 +45,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void initView() {
+        txtError = findViewById(R.id.loginAtv_txtError);
         edtEmail = findViewById(R.id.loginAtv_edtEmail);
         edtPassword = findViewById(R.id.loginAtv_edtPassword);
         btnSignIn = findViewById(R.id.loginAtv_btnSignIn);
@@ -51,30 +54,49 @@ public class LoginActivity extends AppCompatActivity {
 
         btnSignInGoogle.setOnClickListener(v -> onClickBtnSignInGoogle());
         btnSignIn.setOnClickListener(v -> onClickBtnSignIn());
+        btnSignUp.setOnClickListener(v -> onClickBtnSignUp());
     }
 
     @SuppressLint("CheckResult")
     private void onClickBtnSignIn() {
-        String username = edtEmail.getText().toString();
+        String email = edtEmail.getText().toString();
         String password = edtPassword.getText().toString();
-        SignInRequest request = new SignInRequest(username, password);
-        AuthenticationApiHandler.getInstance(MyApplication.getInstance())
-                .signIn(request)
-                .subscribe(token -> {
-                    StateManager.getInstance(MyApplication.getInstance()).setAccessToken(token.getAccessToken());
-                    StateManager.getInstance(MyApplication.getInstance()).setRefreshToken(token.getRefreshToken());
-                    Toast.makeText(this, "Sign in via Google successfully", Toast.LENGTH_LONG).show();
-                    Intent mainActivity = new Intent(this, MainActivity.class);
-                    startActivity(mainActivity);
-                });
+        try {
+            validateLogin(email, password);
+            SignInRequest request = new SignInRequest(email, password);
+            AuthenticationApiHandler.getInstance(MyApplication.getInstance())
+                    .signIn(request)
+                    .subscribe(token -> {
+                        StateManager.getInstance(MyApplication.getInstance()).setAccessToken(token.getAccessToken());
+                        StateManager.getInstance(MyApplication.getInstance()).setRefreshToken(token.getRefreshToken());
+                        Toast.makeText(this, "Sign in via Google successfully", Toast.LENGTH_LONG).show();
+                        Intent mainActivity = new Intent(this, MainActivity.class);
+                        startActivity(mainActivity);
+                    });
+        } catch (Exception e) {
+            txtError.setText(e.getMessage());
+        }
     }
 
     private void validateLogin(String email, String password) {
-
+        final String EMAIL_REGEX = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
+        final String PASSWORD_REGEX = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,20}$";
+        boolean isEmailValid = email.matches(EMAIL_REGEX);
+        boolean isPasswordValid = password.matches(PASSWORD_REGEX);
+        if (!isEmailValid) {
+            throw new IllegalArgumentException("Invalid email format");
+        } else if (!isPasswordValid) {
+            throw new IllegalArgumentException("Password must contain at least one small letter," +
+                    " one capital letter," +
+                    " one special character," +
+                    " one digit " +
+                    " and minimum length of 8 characters");
+        }
     }
 
     private void onClickBtnSignUp() {
-
+        Intent registerActivity = new Intent(this, RegisterActivity.class);
+        startActivity(registerActivity);
     }
 
     private void onClickBtnSignInGoogle() {
@@ -101,9 +123,8 @@ public class LoginActivity extends AppCompatActivity {
                         null
                 );
                 handlerGoogleSignIn(request);
-                // Gửi token này đến server backend của bạn
             } catch (ApiException e) {
-                Toast.makeText(this, "Sign in via Google failed: ", Toast.LENGTH_LONG).show();
+                txtError.setText(String.format("Login error: %s", e.getMessage()));
             }
         }
     }
