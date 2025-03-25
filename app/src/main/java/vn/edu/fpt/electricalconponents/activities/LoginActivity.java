@@ -1,5 +1,6 @@
 package vn.edu.fpt.electricalconponents.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,17 +20,19 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
+import vn.edu.fpt.electricalconponents.MainActivity;
 import vn.edu.fpt.electricalconponents.MyApplication;
 import vn.edu.fpt.electricalconponents.R;
 import vn.edu.fpt.electricalconponents.apis.authentication.AuthenticationApiHandler;
 import vn.edu.fpt.electricalconponents.apis.authentication.dto.GoogleSignInRequest;
+import vn.edu.fpt.electricalconponents.apis.authentication.dto.SignInRequest;
 import vn.edu.fpt.electricalconponents.state.StateManager;
 
 public class LoginActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 9001;
     private FirebaseAuth mAuth;
     private CredentialManager credentialManager;
-    private EditText edtUsername;
+    private EditText edtEmail;
     private EditText edtPassword;
     private Button btnSignIn;
     private Button btnSignUp;
@@ -44,7 +47,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        edtUsername = findViewById(R.id.edtUsername);
+        edtEmail = findViewById(R.id.edtEmail);
         edtPassword = findViewById(R.id.edtPassword);
         btnSignIn = findViewById(R.id.btnSignIn);
         btnSignUp = findViewById(R.id.btnSignUp);
@@ -53,10 +56,27 @@ public class LoginActivity extends AppCompatActivity {
         credentialManager = CredentialManager.create(getBaseContext());
 
         btnSignInGoogle.setOnClickListener(v -> onClickBtnSignInGoogle());
+        btnSignIn.setOnClickListener(v -> onClickBtnSignIn());
     }
 
+    @SuppressLint("CheckResult")
     private void onClickBtnSignIn() {
+        String username = edtEmail.getText().toString();
+        String password = edtPassword.getText().toString();
+        SignInRequest request = new SignInRequest(username, password);
+        AuthenticationApiHandler.getInstance(MyApplication.getInstance())
+                .signIn(request)
+                .subscribe(token -> {
+                    StateManager.getInstance(MyApplication.getInstance()).setAccessToken(token.getAccessToken());
+                    StateManager.getInstance(MyApplication.getInstance()).setRefreshToken(token.getRefreshToken());
+                    Toast.makeText(this, "Sign in via Google successfully", Toast.LENGTH_LONG).show();
+                    Intent mainActivity = new Intent(this, MainActivity.class);
+                    startActivity(mainActivity);
+                });
+    }
 
+    private void validateLogin(String email, String password) {
+        
     }
 
     private void onClickBtnSignUp() {
@@ -94,15 +114,16 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    @SuppressLint("CheckResult")
     private void handlerGoogleSignIn(GoogleSignInRequest request) {
         AuthenticationApiHandler.getInstance(MyApplication.getInstance())
                 .googleSignIn(request)
                 .subscribe(token -> {
-                    Log.w("SignIn", "Sign in via Google successfully: " + token);
                     StateManager.getInstance(MyApplication.getInstance()).setAccessToken(token.getAccessToken());
                     StateManager.getInstance(MyApplication.getInstance()).setRefreshToken(token.getRefreshToken());
                     Toast.makeText(this, "Sign in via Google successfully", Toast.LENGTH_LONG).show();
-                    finish();
+                    Intent mainActivity = new Intent(this, MainActivity.class);
+                    startActivity(mainActivity);
                 }, error -> {
                     Toast.makeText(this, error.getMessage(), Toast.LENGTH_LONG).show();
                 });

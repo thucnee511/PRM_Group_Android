@@ -13,7 +13,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class SignIgnRequest implements Serializable {
+public class SignInRequest implements Serializable {
     private String email;
     private String password;
 }

@@ -7,14 +7,14 @@ import retrofit2.http.POST;
 import vn.edu.fpt.electricalconponents.apis.ApiItemResponse;
 import vn.edu.fpt.electricalconponents.apis.authentication.dto.GoogleSignInRequest;
 import vn.edu.fpt.electricalconponents.apis.authentication.dto.RefreshRequest;
-import vn.edu.fpt.electricalconponents.apis.authentication.dto.SignIgnRequest;
+import vn.edu.fpt.electricalconponents.apis.authentication.dto.SignInRequest;
 import vn.edu.fpt.electricalconponents.apis.authentication.dto.SignUpRequest;
 import vn.edu.fpt.electricalconponents.apis.authentication.dto.Token;
 import vn.edu.fpt.electricalconponents.models.User;
 
 public interface AuthenticationApi {
     @POST("signin")
-    Observable<ApiItemResponse<Token>> signIn(@Body SignIgnRequest request);
+    Observable<ApiItemResponse<Token>> signIn(@Body SignInRequest request);
 
     @POST("signup")
     Observable<ApiItemResponse<Token>> signUp(@Body SignUpRequest request);

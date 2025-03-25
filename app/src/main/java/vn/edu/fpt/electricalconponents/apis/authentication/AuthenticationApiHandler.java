@@ -12,7 +12,7 @@ import io.reactivex.rxjava3.schedulers.Schedulers;
 import vn.edu.fpt.electricalconponents.apis.HttpClient;
 import vn.edu.fpt.electricalconponents.apis.authentication.dto.GoogleSignInRequest;
 import vn.edu.fpt.electricalconponents.apis.authentication.dto.RefreshRequest;
-import vn.edu.fpt.electricalconponents.apis.authentication.dto.SignIgnRequest;
+import vn.edu.fpt.electricalconponents.apis.authentication.dto.SignInRequest;
 import vn.edu.fpt.electricalconponents.apis.authentication.dto.SignUpRequest;
 import vn.edu.fpt.electricalconponents.apis.authentication.dto.Token;
 import vn.edu.fpt.electricalconponents.models.User;
@@ -39,7 +39,7 @@ public final class AuthenticationApiHandler {
         return instance;
     }
 
-    public Observable<Token> signIn(SignIgnRequest request) {
+    public Observable<Token> signIn(SignInRequest request) {
         httpClient.openClient(originalUrl);
         authenticationApi = httpClient.getClient().create(AuthenticationApi.class);
         Observable<Token> observable

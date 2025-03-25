@@ -1,5 +1,7 @@
 package vn.edu.fpt.electricalconponents.apis;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 import com.google.gson.Gson;
@@ -9,8 +11,9 @@ import java.io.IOException;
 
 import okhttp3.Interceptor;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
-import vn.edu.fpt.electricalconponents.utils.EnvConfiguration;
+import vn.edu.fpt.electricalconponents.BuildConfig;
 
 /**
  * The HttpClient class provides a singleton instance for interacting with a remote API via Retrofit.
@@ -27,8 +30,8 @@ public final class HttpClient {
     private Retrofit retrofit;
 
     private HttpClient() {
-        EnvConfiguration config = EnvConfiguration.getInstance();
-        API_URL = config.getKey("API_URL");
+        API_URL = BuildConfig.API_URL;
+        Log.d("API_URL", API_URL);
     }
 
     /**
@@ -66,12 +69,15 @@ public final class HttpClient {
         if (retrofit != null) throw new IllegalStateException("Retrofit already initialized");
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+                .setLenient()
+                .serializeNulls()
                 .create();
         retrofit = new Retrofit.Builder().baseUrl(API_URL + originalUrl)
                 .addConverterFactory(GsonConverterFactory.create(gson))
+                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .build();
     }
-    
+
     /**
      * Initializes the Retrofit client for making API calls.
      * <p>
@@ -106,10 +112,13 @@ public final class HttpClient {
                 .build();
         Gson gson = new GsonBuilder()
                 .setDateFormat("yyyy-MM-dd'T'HH:mm:ssZ")
+                .setLenient()
+                .serializeNulls()
                 .create();
         retrofit = new Retrofit.Builder().baseUrl(API_URL + originalUrl)
                 .client(okHttpClient)
                 .addConverterFactory(GsonConverterFactory.create(gson))
+                .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
                 .build();
     }
 
