@@ -59,4 +59,6 @@ dependencies {
     implementation(libs.credentials)
     implementation(libs.credentials.play.services.auth)
     implementation(libs.googleid)
+    implementation(libs.glide)
+    annotationProcessor(libs.compiler)
 }

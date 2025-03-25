@@ -21,7 +21,7 @@ public class ProductApiHandler {
     private ProductApi productApi;
 
     private ProductApiHandler(Context context) {
-        originalUrl = "api/product/";
+        originalUrl = "api/";
         this.context = context;
         httpClient = HttpClient.getInstance();
     }
@@ -32,9 +32,9 @@ public class ProductApiHandler {
         return instance;
     }
 
-    public Observable<ApiListResponse<Product>> getAllProducts(int page, int size, String keyword,
-                                                               int minPrice, int maxPrice,
-                                                               String categoryId, String brandId, int order) {
+    public Observable<ApiListResponse<Product>> getAllProducts(Integer page, Integer size, String keyword,
+                                                               Integer minPrice, Integer maxPrice,
+                                                               String categoryId, String brandId, Integer order) {
         String accessToken = StateManager.getInstance(this.context).getAccessToken();
         httpClient.openClient(originalUrl, accessToken);
         productApi = httpClient.getClient().create(ProductApi.class);

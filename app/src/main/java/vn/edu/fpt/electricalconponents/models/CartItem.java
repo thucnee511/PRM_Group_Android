@@ -1,7 +1,6 @@
 package vn.edu.fpt.electricalconponents.models;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,6 +19,6 @@ public class CartItem implements Serializable {
     private String productId;
     private int quantity;
     private int price;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private String createdAt;
+    private String updatedAt;
 }

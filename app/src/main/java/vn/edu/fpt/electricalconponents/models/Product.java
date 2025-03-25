@@ -1,7 +1,6 @@
 package vn.edu.fpt.electricalconponents.models;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,6 +24,6 @@ public class Product implements Serializable {
     private String imageUrl;
     private boolean isActive;
     private boolean isDeleted;
-    private LocalDateTime craetedAt;
-    private LocalDateTime updatedAt;
+    private String craetedAt;
+    private String updatedAt;
 }

@@ -1,7 +1,6 @@
 package vn.edu.fpt.electricalconponents.models;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,6 +18,6 @@ public class Brand implements Serializable {
     private String categoryId;
     private String name;
     private String description;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private String createdAt;
+    private String updatedAt;
 }
